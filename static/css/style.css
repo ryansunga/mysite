@@ -1,0 +1,38 @@
+body {
+    background-color: rgb(238, 130, 238);
+    font-family: sans-serif;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+h2 {
+    font-size: 30;
+    color: rgb(0, 255, 255);
+}
+
+p {
+    color: rgb(0, 255, 255);
+}
+
+ul {
+    color: rgb(0, 255, 255);
+    list-style: square;
+}
+
+table {
+    color: rgb(108, 125, 127);
+    background-color: rgb(0, 255, 255);
+    border-collapse: collapse;
+}
+
+td, th {
+    border-width: 1px;
+    padding-top: 3px;
+    padding-bottom:3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+}
