@@ -1,4 +1,5 @@
 import course
+import song
 
 COURSES = [
     course.Course(period=1,
@@ -30,5 +31,38 @@ COURSES = [
                   name='ERWC',
                   teacher_name='Mrs. Wenzell',
                   resource_name='CSU',
-                  resource_url='https://writing.csusuccess.org/'),
+                  resource_url='https://writing.csusuccess.org/')
+]
+
+TOP_TEN_SONGS = [
+    song.Song(title="Kevin's Heart",
+        artist_name="J. Cole",
+        youtube_url="https://www.youtube.com/watch?v=ufynqs_COF4"),
+    song.Song(title="Nice for What",
+        artist_name="Drake",
+        youtube_url="https://www.youtube.com/watch?v=U9BwWKXjVaI"),
+    song.Song(title = "A$AP Forever",
+        artist_name = "A$AP Rocky",
+        youtube_url = "https://www.youtube.com/watch?v=BNzc6hG3yN4"),
+    song.Song(title = "Guatemala",
+        artist_name = "Swae Lee",
+        youtube_url = "https://www.youtube.com/watch?v=1zXOcXnD8XU"),
+    song.Song(title = "Plug Walk",
+        artist_name = "Rich The Kid",
+        youtube_url = "https://www.youtube.com/watch?v=ToY6sjSV8h8"),
+    song.Song(title = "Psycho",
+        artist_name = "Post Malone",
+        youtube_url = "https://www.youtube.com/watch?v=au2n7VVGv_c"),
+    song.Song(title = "OTW",
+        artist_name = "Khalid",
+        youtube_url = "https://www.youtube.com/watch?v=hjf-h6NMj7U"),
+    song.Song(title = "Sativa",
+        artist_name = "Jhene Aiko",
+        youtube_url = "https://www.youtube.com/watch?v=5x-d3pabd5o"),
+    song.Song(title = "Get You",
+        artist_name = "Daniel Caesar",
+        youtube_url = "https://www.youtube.com/watch?v=uQFVqltOXRg"),
+    song.Song(title = "Best Part",
+        artist_name = "Daniel Caesar",
+        youtube_url = "https://www.youtube.com/watch?v=iKk6_2-AAGc")
 ]

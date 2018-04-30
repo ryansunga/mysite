@@ -11,7 +11,6 @@ app = Flask(__name__)
 def homepage():
     return render_template('index.html')
 
-@app.route('/aboutme')
 @app.route('/about_me')
 def about_me():
     return render_template('about_me.html',
@@ -28,3 +27,7 @@ def class_schedule():
 def register():
     return render_template('register.html',
                            courses=constants.COURSES)
+
+@app.route('/top_ten_songs')
+def top_ten_songs():
+    return render_template('top_ten_songs.html', songs=constants.TOP_TEN_SONGS)
