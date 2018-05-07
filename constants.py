@@ -1,6 +1,7 @@
-import course
+#import course
 import song
 
+'''
 COURSES = [
     course.Course(period=1,
                   name='Intro to Computer Science',
@@ -33,6 +34,7 @@ COURSES = [
                   resource_name='CSU',
                   resource_url='https://writing.csusuccess.org/')
 ]
+'''
 
 TOP_TEN_SONGS = [
     song.Song(title="Kevin's Heart",
