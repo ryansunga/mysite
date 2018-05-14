@@ -4,8 +4,11 @@
 from flask import Flask
 from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+
+Bootstrap(app)
 
 app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
