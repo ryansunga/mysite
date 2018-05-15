@@ -38,6 +38,7 @@ def create_navbar():
 
 app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
+
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     period = db.Column(db.Integer)
@@ -60,12 +61,12 @@ class RegistrationForm(FlaskForm):
     password = PasswordField(
         'Password', validators=[InputRequired(), Length(min=8, max=80)])
     submit = SubmitField('Register')
-     def validate_username(self, username):
+    def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please choose a different username.')
 
- class User(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15))
     email = db.Column(db.String(150))
