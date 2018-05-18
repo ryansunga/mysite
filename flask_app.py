@@ -18,6 +18,7 @@ from flask import url_for
 from wtforms.validators import ValidationError
 from flask import flash
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -30,6 +31,7 @@ def create_navbar():
     home_view = View('Home', 'homepage')
     login_view = View('Login', 'login')
     logout_view = View('Logout', 'logout')
+    posts_view = View('Posts', 'posts')
     register_view = View('Register', 'register')
     about_me_view = View('About Me', 'about_me')
     class_schedule_view = View('Class Schedule', 'class_schedule')
@@ -39,7 +41,7 @@ def create_navbar():
                              class_schedule_view,
                              top_ten_songs_view)
     if current_user.is_authenticated:
-        return Navbar('MySite', home_view, misc_subgroup, logout_view)
+        return Navbar('MySite', home_view, posts_view, misc_subgroup, logout_view)
     else:
         return Navbar('MySite', home_view, misc_subgroup, login_view, register_view)
 
@@ -48,6 +50,17 @@ def create_navbar():
 app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
 login = LoginManager(app)
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(280))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class PostForm(FlaskForm):
+    message = StringField('Message', validators=[InputRequired(), Length(max=280)])
+    submit = SubmitField('Post')
+
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -99,7 +112,9 @@ class User(db.Model, UserMixin):
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
+    recent_posts = Post.query.order_by(Post.timestamp.desc()).limit(20).all()
+    return render_template('index.html', posts=recent_posts)
+
 
 @app.route('/about_me')
 def about_me():
@@ -152,6 +167,19 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
+
+@app.route('/posts', methods=['GET', 'POST'])
+def posts():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    form = PostForm()
+    posts = Post.query.filter_by(user_id=current_user.id).all()
+    if form.validate_on_submit():
+        new_post = Post(user_id=current_user.id, body=form.message.data)
+        db.session.add(new_post)
+        db.session.commit()
+        posts.append(new_post)
+    return render_template('posts.html', form=form, posts=posts)
 
 if __name__ == '__main__':
   db.create_all()
