@@ -34,6 +34,7 @@ def create_navbar():
     posts_view = View('Posts', 'posts')
     register_view = View('Register', 'register')
     about_me_view = View('About Me', 'about_me')
+    bucketlist_view = View('Bucketlist', 'bucketlist')
     class_schedule_view = View('Class Schedule', 'class_schedule')
     top_ten_songs_view = View('Top Ten Songs', 'top_ten_songs')
     misc_subgroup = Subgroup('Misc',
@@ -41,7 +42,7 @@ def create_navbar():
                              class_schedule_view,
                              top_ten_songs_view)
     if current_user.is_authenticated:
-        return Navbar('MySite', home_view, posts_view, misc_subgroup, logout_view)
+        return Navbar('MySite', home_view, posts_view, misc_subgroup, logout_view, bucketlist_view)
     else:
         return Navbar('MySite', home_view, misc_subgroup, login_view, register_view)
 
@@ -61,6 +62,15 @@ class PostForm(FlaskForm):
     message = StringField('Message', validators=[InputRequired(), Length(max=280)])
     submit = SubmitField('Post')
 
+class Activity(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(280))
+    #location = db.Column(db.String(280))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class ActivityForm(FlaskForm):
+    activity = StringField('Activity', validators=[InputRequired(), Length(max=280)])
+    submit = SubmitField('Submit')
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -110,6 +120,7 @@ class User(db.Model, UserMixin):
         return User.query.filter_by(id=int(user_id)).first()
 
 
+
 @app.route('/')
 def homepage():
     recent_posts = Post.query.order_by(Post.timestamp.desc()).limit(20).all()
@@ -128,6 +139,18 @@ def class_schedule():
     return render_template('class_schedule.html',
                            courses=courses)
 
+@app.route('/bucketlist', methods=['GET', 'POST'])
+def bucketlist():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    form = ActivityForm()
+    activities = Activity.query.filter_by(user_id=current_user.id).all()
+    if form.validate_on_submit():
+        new_activity = Activity(user_id=current_user.id, body=form.activity.data)
+        db.session.add(new_activity)
+        db.session.commit()
+        activities.append(new_activity)
+    return render_template('bucketlist.html', form=form, activities=activities)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}My Bucketlist{% endblock %}
+{% block content %}
+<div class="container">
+<th>Bucketlist</th>
+{{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+{% for activity in activities %}
+<p>{{ activity.body}}</p>
+{% endfor %}
+</div>
+{% endblock %}
