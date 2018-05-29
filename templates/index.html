@@ -9,7 +9,13 @@
 {% endif %}
 <h3>Recent posts from users</h3>
 {% for post in posts %}
+<table class ="table table-bordered table-striped">
+<tr>
+<td>
 <p>{{ post.body }}</p>
+{{ post.timestamp.strftime('%c') }}
+</tr>
+</td>
 {% endfor %}
 </div>
 {% endblock %}
